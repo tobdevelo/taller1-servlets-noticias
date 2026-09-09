@@ -1,0 +1,13 @@
+target/
+*.class
+*.war
+*.ear
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+nbproject/
+build/
+dist/
+*.log

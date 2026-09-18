@@ -14,7 +14,7 @@ public class ConexionBaseDatos {
     protected String url = "jdbc:mysql://";
     protected int puertoServidorBD = 3306;
     protected String usuarioBD = "root";
-    protected String passwordUsuarioBD = "admin"; // Si tu root tiene contraseña local, escribela aqui
+    protected String passwordUsuarioBD = "admin";
     protected String nombreBD = "bd_noticias";
 
     private Connection conexion;
@@ -22,6 +22,29 @@ public class ConexionBaseDatos {
     private ResultSet filasConsulta;
 
     public ConexionBaseDatos() throws Exception {
+        // Si existen variables en el entorno (Railway), las toma; si no, deja los valores locales por defecto
+        String envHost = System.getenv("MYSQLHOST");
+        String envPort = System.getenv("MYSQLPORT");
+        String envDB   = System.getenv("MYSQLDATABASE");
+        String envUser = System.getenv("MYSQLUSER");
+        String envPass = System.getenv("MYSQLPASSWORD");
+
+        if (envHost != null && !envHost.isEmpty()) {
+            this.nombreIPServidorBD = envHost;
+        }
+        if (envPort != null && !envPort.isEmpty()) {
+            this.puertoServidorBD = Integer.parseInt(envPort);
+        }
+        if (envDB != null && !envDB.isEmpty()) {
+            this.nombreBD = envDB;
+        }
+        if (envUser != null && !envUser.isEmpty()) {
+            this.usuarioBD = envUser;
+        }
+        if (envPass != null) {
+            this.passwordUsuarioBD = envPass;
+        }
+
         this.url = this.url + this.nombreIPServidorBD + ":" + this.puertoServidorBD + "/" + this.nombreBD + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
         this.conectar();
     }
